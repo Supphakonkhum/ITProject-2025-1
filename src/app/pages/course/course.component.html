@@ -1,1 +1,9 @@
-<p>course works!</p>
+<div class="course-list">
+  <h2>รายวิชาที่เปิดสอน</h2>
+
+  <div *ngFor="let course of courses" class="course-card">
+    <h3>{{ course.title }}</h3>
+    <p>{{ course.description }}</p>
+    <p><strong>ระยะเวลา:</strong> {{ course.duration }}</p>
+  </div>
+</div>

@@ -1,1 +1,9 @@
-<p>service works!</p>
+<div class="services-container">
+  <h2>บริการของเรา</h2>
+
+  <div class="service-card" *ngFor="let service of services">
+    <div class="icon">{{ service.icon }}</div>
+    <h3>{{ service.title }}</h3>
+    <p>{{ service.description }}</p>
+  </div>
+</div>

@@ -1,1 +1,8 @@
-<p>trainer works!</p>
+<div class="trainer-container">
+  <h2>Our Trainers</h2>
+  <div class="trainer-card" *ngFor="let trainer of trainers">
+    <h3>{{ trainer.name }}</h3>
+    <p>Specialty: {{ trainer.specialty }}</p>
+    <p>Experience: {{ trainer.experience }} years</p>
+  </div>
+</div>

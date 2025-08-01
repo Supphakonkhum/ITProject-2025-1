@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
+  welcomeMessage: string = 'ยินดีต้อนรับสู่ระบบนัดหมายและติดตามเทรนเนอร์';
 }

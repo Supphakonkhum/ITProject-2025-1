@@ -1,0 +1,12 @@
+.trainer-container {
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+.trainer-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
