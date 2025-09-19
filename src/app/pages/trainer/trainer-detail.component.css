@@ -20,8 +20,9 @@
 }
 
 .btn-back:hover {
-  background: #e9ecef;
-  color: #007bff;
+  background: #ef4444 !important;
+  color: white !important;
+  border-color: #ef4444 !important;
 }
 
 .trainer-profile {
@@ -123,9 +124,9 @@
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #0056b3, #004085);
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
 }
 
 .btn-secondary {
@@ -135,8 +136,9 @@
 }
 
 .btn-secondary:hover {
-  background: #007bff;
-  color: white;
+  background: #ef4444 !important;
+  color: white !important;
+  border-color: #ef4444 !important;
   transform: translateY(-2px);
 }
 

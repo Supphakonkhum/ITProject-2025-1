@@ -69,13 +69,9 @@ export class CourseEnrollmentComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      birthDate: ['', Validators.required],
-      address: ['', [Validators.required, Validators.minLength(10)]],
-      emergencyContact: ['', [Validators.required, Validators.minLength(2)]],
-      emergencyPhone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       medicalConditions: [''],
       experience: ['', Validators.required],
-      goals: ['', [Validators.required, Validators.minLength(20)]],
+      goals: ['', [Validators.required, Validators.minLength(10)]],
       paymentMethod: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
     });
@@ -102,12 +98,33 @@ export class CourseEnrollmentComponent implements OnInit {
         existingEnrollments.push(enrollmentData);
         localStorage.setItem('courseEnrollments', JSON.stringify(existingEnrollments));
         
+        // Save to registration history
+        if (this.course) {
+          const registrationHistoryData = {
+            id: Date.now(),
+            userId: 1, // In real app, get from auth service
+            courseId: this.course.id,
+            courseName: this.course.title,
+            registrationDate: new Date(),
+            status: 'active',
+            price: this.course.price,
+            studentName: `${enrollmentData.firstName} ${enrollmentData.lastName}`,
+            email: enrollmentData.email,
+            phone: enrollmentData.phone,
+            paymentMethod: enrollmentData.paymentMethod
+          };
+          
+          const existingHistory = JSON.parse(localStorage.getItem('registrationHistory') || '[]');
+          existingHistory.push(registrationHistoryData);
+          localStorage.setItem('registrationHistory', JSON.stringify(existingHistory));
+        }
+        
         this.isSubmitting = false;
         this.showSuccessMessage = true;
         
-        // Redirect after success
+        // Redirect to registration history after success
         setTimeout(() => {
-          this.router.navigate(['/course']);
+          this.router.navigate(['/registration-history']);
         }, 3000);
       }, 2000);
     } else {
@@ -145,10 +162,6 @@ export class CourseEnrollmentComponent implements OnInit {
       lastName: 'นามสกุล',
       email: 'อีเมล',
       phone: 'เบอร์โทรศัพท์',
-      birthDate: 'วันเกิด',
-      address: 'ที่อยู่',
-      emergencyContact: 'ผู้ติดต่อฉุกเฉิน',
-      emergencyPhone: 'เบอร์ผู้ติดต่อฉุกเฉิน',
       experience: 'ระดับประสบการณ์',
       goals: 'เป้าหมายในการเรียน',
       paymentMethod: 'วิธีการชำระเงิน'
@@ -158,19 +171,5 @@ export class CourseEnrollmentComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/course']);
-  }
-
-  calculateAge(): number {
-    if (this.enrollmentForm.get('birthDate')?.value) {
-      const birthDate = new Date(this.enrollmentForm.get('birthDate')?.value);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
-    }
-    return 0;
   }
 }

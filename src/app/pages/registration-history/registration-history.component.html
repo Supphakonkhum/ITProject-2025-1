@@ -134,6 +134,10 @@
           </div>
           
           <div class="registration-details">
+            <div class="detail-item" *ngIf="registration.studentName">
+              <span class="detail-label">ชื่อผู้สมัคร:</span>
+              <span class="detail-value">{{ registration.studentName }}</span>
+            </div>
             <div class="detail-item">
               <span class="detail-label">วันที่สมัคร:</span>
               <span class="detail-value">{{ formatDate(registration.registrationDate) }}</span>
@@ -141,6 +145,18 @@
             <div class="detail-item">
               <span class="detail-label">ราคา:</span>
               <span class="detail-value">{{ registration.price | number }} บาท</span>
+            </div>
+            <div class="detail-item" *ngIf="registration.email">
+              <span class="detail-label">อีเมล:</span>
+              <span class="detail-value">{{ registration.email }}</span>
+            </div>
+            <div class="detail-item" *ngIf="registration.phone">
+              <span class="detail-label">เบอร์โทร:</span>
+              <span class="detail-value">{{ registration.phone }}</span>
+            </div>
+            <div class="detail-item" *ngIf="registration.paymentMethod">
+              <span class="detail-label">วิธีชำระเงิน:</span>
+              <span class="detail-value">{{ registration.paymentMethod }}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label">รหัสคอร์ส:</span>
@@ -151,6 +167,25 @@
           <div class="registration-footer">
             <div class="registration-id">
               รหัสการสมัคร: #{{ registration.id.toString().padStart(6, '0') }}
+            </div>
+            <div class="registration-actions">
+              <button 
+                *ngIf="registration.status === 'active'"
+                class="btn btn-warning btn-sm"
+                (click)="cancelRegistration(registration.id)"
+                [disabled]="isCancelling"
+              >
+                <span *ngIf="!isCancelling">ยกเลิกการสมัคร</span>
+                <span *ngIf="isCancelling">กำลังยกเลิก...</span>
+              </button>
+              <button 
+                class="btn btn-danger btn-sm"
+                (click)="deleteRegistration(registration.id)"
+                [disabled]="isDeleting"
+              >
+                <span *ngIf="!isDeleting">ลบการสมัคร</span>
+                <span *ngIf="isDeleting">กำลังลบ...</span>
+              </button>
             </div>
           </div>
         </div>

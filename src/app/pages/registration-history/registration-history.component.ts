@@ -38,6 +38,8 @@ export class RegistrationHistoryComponent implements OnInit {
   ];
 
   isAddingRegistration = false;
+  isCancelling = false;
+  isDeleting = false;
   successMessage = '';
   errorMessage = '';
 
@@ -58,16 +60,24 @@ export class RegistrationHistoryComponent implements OnInit {
   loadRegistrationHistory(): void {
     if (!this.currentUser) return;
 
+    // Load from localStorage for now (in real app, get from backend)
+    const localHistory = JSON.parse(localStorage.getItem('registrationHistory') || '[]');
+    
     this.authService.getRegistrationHistory(this.currentUser.id).subscribe({
       next: (history) => {
-        this.registrationHistory = history.sort((a, b) => 
+        // Combine auth service history with local storage history
+        const combinedHistory = [...history, ...localHistory];
+        this.registrationHistory = combinedHistory.sort((a, b) => 
           new Date(b.registrationDate).getTime() - new Date(a.registrationDate).getTime()
         );
         this.isLoading = false;
       },
       error: () => {
+        // If auth service fails, just use localStorage
+        this.registrationHistory = localHistory.sort((a: any, b: any) => 
+          new Date(b.registrationDate).getTime() - new Date(a.registrationDate).getTime()
+        );
         this.isLoading = false;
-        this.errorMessage = 'เกิดข้อผิดพลาดในการโหลดข้อมูล';
       }
     });
   }
@@ -190,5 +200,65 @@ export class RegistrationHistoryComponent implements OnInit {
 
   getYearKeys(): string[] {
     return Object.keys(this.getRegistrationsByYear()).sort((a, b) => +b - +a);
+  }
+
+  cancelRegistration(registrationId: number): void {
+    if (!confirm('คุณแน่ใจหรือไม่ที่จะยกเลิกการสมัครเรียนนี้?')) {
+      return;
+    }
+
+    this.isCancelling = true;
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    // Update status in localStorage
+    const localHistory = JSON.parse(localStorage.getItem('registrationHistory') || '[]');
+    const updatedLocalHistory = localHistory.map((reg: any) => {
+      if (reg.id === registrationId) {
+        return { ...reg, status: 'cancelled' };
+      }
+      return reg;
+    });
+    localStorage.setItem('registrationHistory', JSON.stringify(updatedLocalHistory));
+
+    // Simulate API call
+    setTimeout(() => {
+      // Update the current list
+      this.registrationHistory = this.registrationHistory.map(reg => {
+        if (reg.id === registrationId) {
+          return { ...reg, status: 'cancelled' as 'active' | 'completed' | 'cancelled' };
+        }
+        return reg;
+      });
+
+      this.isCancelling = false;
+      this.successMessage = 'ยกเลิกการสมัครเรียนเรียบร้อยแล้ว';
+      setTimeout(() => this.successMessage = '', 3000);
+    }, 1000);
+  }
+
+  deleteRegistration(registrationId: number): void {
+    if (!confirm('คุณแน่ใจหรือไม่ที่จะลบการสมัครเรียนนี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้')) {
+      return;
+    }
+
+    this.isDeleting = true;
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    // Remove from localStorage
+    const localHistory = JSON.parse(localStorage.getItem('registrationHistory') || '[]');
+    const updatedLocalHistory = localHistory.filter((reg: any) => reg.id !== registrationId);
+    localStorage.setItem('registrationHistory', JSON.stringify(updatedLocalHistory));
+
+    // Simulate API call
+    setTimeout(() => {
+      // Remove from current list
+      this.registrationHistory = this.registrationHistory.filter(reg => reg.id !== registrationId);
+
+      this.isDeleting = false;
+      this.successMessage = 'ลบการสมัครเรียนเรียบร้อยแล้ว';
+      setTimeout(() => this.successMessage = '', 3000);
+    }, 1000);
   }
 }

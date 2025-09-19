@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -7,16 +7,23 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username = '';
   password = '';
   isLoading = false;
   errorMessage = '';
+  returnUrl = '';
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    // ตรวจสอบว่ามี returnUrl ไหม
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/profile';
+  }
 
   onSubmit(): void {
     if (!this.username || !this.password) {
@@ -31,7 +38,8 @@ export class LoginComponent {
       next: (success) => {
         this.isLoading = false;
         if (success) {
-          this.router.navigate(['/profile']);
+          // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการเดิม หรือ profile
+          this.router.navigate([this.returnUrl]);
         } else {
           this.errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
         }

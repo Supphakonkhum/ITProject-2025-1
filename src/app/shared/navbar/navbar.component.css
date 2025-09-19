@@ -7,14 +7,15 @@
 
 /* Navigation */
 .top-nav {
-  background: linear-gradient(135deg, #22C55E, #16A34A); /* สีเขียวเป็นสีหลัก */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(9, 9, 11, 0.95); /* โทนดำโมเดิร์น */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .top-nav .container {
@@ -31,9 +32,11 @@
 
 .brand-text {
   color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 800;
+  font-size: 1.375rem;
+  text-shadow: none;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.025em;
 }
 
 .nav-menu {
@@ -44,25 +47,27 @@
 .nav-item {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.9);
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
+  font-size: 0.9rem;
   position: relative;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  letter-spacing: -0.01em;
 }
 
 .nav-item:hover {
-  background: #F59E0B; /* สีส้มจากธีม */
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
 }
 
 .nav-item.active {
-  background: #15803D; /* สีเขียวเข้มสำหรับหน้าปัจจุบัน */
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
 .nav-actions {
@@ -74,17 +79,18 @@
 .search-box {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
   padding: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-box:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ef4444;
+  transform: translateY(-1px);
 }
 
 .search-input {
@@ -112,29 +118,31 @@
 }
 
 .search-btn:hover {
-  color: #16A34A; /* สีเขียวเข้มเมื่อ hover */
+  color: #dc2626; /* สีแดงเมื่อ hover */
   transform: scale(1.1);
-  background: rgba(22, 163, 74, 0.2);
+  background: rgba(220, 38, 38, 0.2);
 }
 
 .login-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 0.625rem 1.75rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
-  backdrop-filter: blur(10px);
+  font-size: 0.875rem;
+  backdrop-filter: blur(20px);
+  letter-spacing: -0.01em;
 }
 
 .login-btn:hover {
-  background: #F59E0B; /* สีส้มจากธีม */
-  border-color: #F59E0B;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: transparent;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
 }
 
 /* Mini Profile Dropdown */
@@ -163,7 +171,7 @@
 .profile-avatar {
   width: 32px;
   height: 32px;
-  background: #F59E0B;
+  background: #dc2626;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -233,7 +241,7 @@
 
 .dropdown-item:hover {
   background: #f9fafb;
-  color: #22C55E;
+  color: #dc2626;
 }
 
 .dropdown-item svg {
@@ -242,7 +250,7 @@
 }
 
 .dropdown-item:hover svg {
-  color: #22C55E;
+  color: #dc2626;
 }
 
 .dropdown-item.logout {
@@ -308,7 +316,7 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: #F59E0B;
+  background: #dc2626;
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
@@ -319,11 +327,11 @@
 }
 
 .nav-item.active::after {
-  background: #15803D; /* สีเขียวเข้มสำหรับเส้นใต้ */
+  background: #333333; /* สีเทาเข้มสำหรับเส้นใต้ */
 }
 
 /* Scroll effect */
 .top-nav.scrolled {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.95)); /* สีเขียวเมื่อ scroll */
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(26, 26, 26, 0.95)); /* สีดำเมื่อ scroll */
   backdrop-filter: blur(20px);
 }

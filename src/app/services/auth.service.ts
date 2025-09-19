@@ -31,6 +31,10 @@ export interface RegistrationHistory {
   registrationDate: Date;
   status: 'active' | 'completed' | 'cancelled';
   price: number;
+  studentName?: string;
+  email?: string;
+  phone?: string;
+  paymentMethod?: string;
 }
 
 @Injectable({

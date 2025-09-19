@@ -12,21 +12,22 @@ import { RegisterComponent } from './pages/auth/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { WorkoutHistoryComponent } from './pages/workout-history/workout-history.component';
 import { RegistrationHistoryComponent } from './pages/registration-history/registration-history.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'course', component: CourseComponent },
-  { path: 'course-enrollment', component: CourseEnrollmentComponent },
-  { path: 'service', component: ServiceComponent },
+  { path: 'course-enrollment', component: CourseEnrollmentComponent, canActivate: [AuthGuard] },
+  { path: 'service', component: ServiceComponent, canActivate: [AuthGuard] },
   { path: 'trainer', component: TrainerComponent },
   { path: 'trainer/:id', component: TrainerDetailComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'workout-history', component: WorkoutHistoryComponent },
-  { path: 'registration-history', component: RegistrationHistoryComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'workout-history', component: WorkoutHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'registration-history', component: RegistrationHistoryComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '/home' } // Wildcard route for 404 page
 ];
 
