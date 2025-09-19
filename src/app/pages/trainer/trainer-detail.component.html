@@ -1,0 +1,95 @@
+<div class="trainer-detail-container" *ngIf="trainer">
+  <div class="back-button">
+    <button (click)="goBack()" class="btn-back">
+      ← กลับไปหน้า Trainers
+    </button>
+  </div>
+
+  <div class="trainer-profile">
+    <div class="trainer-image">
+      <img [src]="trainer.image" [alt]="trainer.name" onerror="this.src=''">
+    </div>
+    
+    <div class="trainer-info">
+      <h1>{{ trainer.name }}</h1>
+      <div class="specialty">{{ trainer.specialty }} Specialist</div>
+      <div class="rating">
+        <span class="stars">
+          <span *ngFor="let star of getStarRating(trainer.rating)" 
+                [class]="star === '★' ? 'star-filled' : 'star-empty'">{{ star }}</span>
+        </span>
+        <span class="rating-text">{{ trainer.rating }}/5 ({{ trainer.reviewCount }} รีวิว)</span>
+      </div>
+      
+      <div class="quick-info">
+        <div class="info-item">
+          <strong>ประสบการณ์:</strong> {{ trainer.experience }} ปี
+        </div>
+        <div class="info-item">
+          <strong>อายุ:</strong> {{ trainer.age }} ปี
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button (click)="bookSession()" class="btn-primary">จองเซสชั่น</button>
+        <button (click)="contactTrainer()" class="btn-secondary">ติดต่อ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="trainer-details">
+    <div class="section">
+      <h2>เกี่ยวกับ {{ trainer.name }}</h2>
+      <p class="bio">{{ trainer.bio }}</p>
+    </div>
+
+    <div class="section">
+      <h2>การรับรองและใบประกาศ</h2>
+      <ul class="certification-list">
+        <li *ngFor="let cert of trainer.certification" class="certification-item">
+          <span class="cert-icon">🏆</span>
+          {{ cert }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>ความสำเร็จ</h2>
+      <ul class="achievement-list">
+        <li *ngFor="let achievement of trainer.achievements" class="achievement-item">
+          <span class="achievement-icon">🌟</span>
+          {{ achievement }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>ตารางการทำงาน</h2>
+      <div class="schedule">
+        <div *ngFor="let schedule of trainer.schedule" class="schedule-item">
+          <span class="schedule-icon">📅</span>
+          {{ schedule }}
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>ข้อมูลติดต่อ</h2>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <strong>Email:</strong> {{ trainer.contactInfo.email }}
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <strong>โทรศัพท์:</strong> {{ trainer.contactInfo.phone }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="not-found" *ngIf="!trainer">
+  <h2>ไม่พบข้อมูลเทรนเนอร์</h2>
+  <button (click)="goBack()" class="btn-primary">กลับไปหน้า Trainers</button>
+</div>

@@ -1,21 +1,53 @@
-<div class="home-container">
-  <h1>{{ welcomeMessage }}</h1>
-  <p>ระบบนี้ช่วยให้คุณสามารถค้นหาเทรนเนอร์ นัดหมาย และติดตามการฝึกได้สะดวกสบาย</p>
-
-  <img src="assets/images/fitness-banner.jpg" alt="Fitness Banner" class="banner" />
-
-  <div class="features">
-    <div class="feature">
-      <h3>🔍 ค้นหาเทรนเนอร์</h3>
-      <p>เลือกเทรนเนอร์ที่ตรงกับเป้าหมายของคุณ</p>
-    </div>
-    <div class="feature">
-      <h3>📅 นัดหมาย</h3>
-      <p>จัดการตารางเวลาและการนัดหมายกับเทรนเนอร์</p>
-    </div>
-    <div class="feature">
-      <h3>📊 ติดตามผล</h3>
-      <p>ติดตามความก้าวหน้าและสถิติการฝึก</p>
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Fitness Equipment" class="hero-bg" />
+        <div class="hero-overlay">
+          <h1 class="hero-title">ระบบติดตามและนัดหมายเทรนเนอร์</h1>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- Personal Trainer Section -->
+<section class="trainer-section">
+  <div class="container">
+    <div class="trainer-card">
+      <div class="trainer-image">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Personal Trainer" class="trainer-img" />
+      </div>
+      <div class="trainer-info">
+        <div class="trainer-badge">เทรนเนอร์ส่วนตัว</div>
+        <h2 class="trainer-title">ผู้ที่ต้องการเทรนเนอร์ช่วย</h2>
+        <p class="trainer-description">ที่นี่มีค่าตอบแทน</p>
+        <button class="trainer-btn" routerLink="/trainer">เลือกเทรนเนอร์</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- News Section -->
+<section class="news-section">
+  <div class="container">
+    <h2 class="section-title">ข่าวสาร</h2>
+    <div class="news-grid">
+      <div class="news-card" *ngFor="let news of newsItems" (click)="onNewsClick(news)">
+        <div class="news-image">
+          <img [src]="news.image" [alt]="news.title" class="news-img" />
+        </div>
+        <div class="news-content">
+          <h3 class="news-title">{{ news.title }}</h3>
+          <p class="news-description">{{ news.description }}</p>
+          <div class="news-action">
+            <span class="action-text" *ngIf="news.isExternal">เยื่ยมชมเว็บไซต์ภายนอก</span>
+            <span class="action-text" *ngIf="!news.isExternal">ดูรายละเอียดเพิ่มเติม</span>
+            <span class="action-icon">→</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

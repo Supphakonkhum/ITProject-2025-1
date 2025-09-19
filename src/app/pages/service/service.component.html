@@ -1,9 +1,77 @@
-<div class="services-container">
-  <h2>บริการของเรา</h2>
+<div class="services-page">
+  <section class="services-section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">บริการของเรา</h1>
+        <p class="section-subtitle">บริการครบครันสำหรับการดูแลสุขภาพและการฝึกของคุณ</p>
+      </div>
 
-  <div class="service-card" *ngFor="let service of services">
-    <div class="icon">{{ service.icon }}</div>
-    <h3>{{ service.title }}</h3>
-    <p>{{ service.description }}</p>
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let service of services; let i = index" [attr.data-index]="i">
+        <div class="service-icon">
+          <span class="icon">{{ service.icon }}</span>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">{{ service.title }}</h3>
+          <p class="service-description">{{ service.description }}</p>
+          
+          <div class="service-features">
+            <div class="feature-item" *ngFor="let feature of service.features">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20,6 9,17 4,12"/>
+              </svg>
+              <span>{{ feature }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="service-footer">
+          <div class="service-price">
+            <span class="price-label">เริ่มต้น</span>
+            <span class="price-amount">{{ service.price }}</span>
+            <span class="price-unit">บาท/เดือน</span>
+          </div>
+          <button class="btn btn-primary" (click)="selectService(service)">
+            <span>เลือกบริการ</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Process -->
+    <div class="service-process">
+      <h2 class="process-title">ขั้นตอนการใช้บริการ</h2>
+      <div class="process-steps">
+        <div class="step-item" *ngFor="let step of serviceSteps; let i = index">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-content">
+            <h4 class="step-title">{{ step.title }}</h4>
+            <p class="step-description">{{ step.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2 class="faq-title">คำถามที่พบบ่อย</h2>
+      <div class="faq-list">
+        <div class="faq-item" *ngFor="let faq of faqs; let i = index">
+          <button class="faq-question" (click)="toggleFaq(i)" [class.active]="activeFaq === i">
+            <span>{{ faq.question }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.rotated]="activeFaq === i">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer" [class.active]="activeFaq === i">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  </section>
 </div>

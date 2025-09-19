@@ -1,0 +1,160 @@
+<div class="registration-history-container">
+  <div class="header">
+    <h2>ประวัติการสมัครเรียน</h2>
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="toggleAddForm()">
+        <span *ngIf="!showAddForm">+ สมัครคอร์สใหม่</span>
+        <span *ngIf="showAddForm">ยกเลิก</span>
+      </button>
+      <button class="btn btn-secondary" (click)="goBack()">
+        กลับ
+      </button>
+    </div>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div class="success-message" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Add Registration Form -->
+  <div class="add-registration-form" *ngIf="showAddForm">
+    <div class="form-card">
+      <h3>สมัครคอร์สใหม่</h3>
+      <form (ngSubmit)="addRegistration()" #registrationForm="ngForm">
+        <div class="form-group">
+          <label for="courseId">เลือกคอร์สเรียน:</label>
+          <select
+            id="courseId"
+            name="courseId"
+            [(ngModel)]="newRegistration.courseId"
+            (change)="onCourseChange()"
+            required
+            class="form-control"
+          >
+            <option value="0">เลือกคอร์สเรียน</option>
+            <option *ngFor="let course of availableCourses" [value]="course.id">
+              {{ course.name }} - {{ course.price | number }} บาท
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="newRegistration.courseId">
+          <label for="status">สถานะ:</label>
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="newRegistration.status"
+            required
+            class="form-control"
+          >
+            <option *ngFor="let status of statusOptions" [value]="status.value">
+              {{ status.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="course-info" *ngIf="newRegistration.courseId">
+          <div class="info-item">
+            <strong>ชื่อคอร์ส:</strong> {{ newRegistration.courseName }}
+          </div>
+          <div class="info-item">
+            <strong>ราคา:</strong> {{ newRegistration.price | number }} บาท
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            [disabled]="isAddingRegistration || !registrationForm.form.valid"
+            class="btn btn-primary"
+          >
+            <span *ngIf="isAddingRegistration">กำลังบันทึก...</span>
+            <span *ngIf="!isAddingRegistration">สมัครเรียน</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-section" *ngIf="!isLoading && registrationHistory.length > 0">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">{{ getTotalRegistrations() }}</div>
+        <div class="stat-label">คอร์สทั้งหมด</div>
+      </div>
+      <div class="stat-card active">
+        <div class="stat-number">{{ getActiveRegistrations() }}</div>
+        <div class="stat-label">กำลังเรียน</div>
+      </div>
+      <div class="stat-card completed">
+        <div class="stat-number">{{ getCompletedRegistrations() }}</div>
+        <div class="stat-label">เรียนจบแล้ว</div>
+      </div>
+      <div class="stat-card total-spent">
+        <div class="stat-number">{{ getTotalSpent() | number }}</div>
+        <div class="stat-label">บาทที่ใช้ไป</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    กำลังโหลดข้อมูล...
+  </div>
+
+  <!-- No Data -->
+  <div class="no-data" *ngIf="!isLoading && registrationHistory.length === 0">
+    <div class="no-data-icon">📚</div>
+    <h3>ยังไม่มีประวัติการสมัครเรียน</h3>
+    <p>เริ่มสมัครคอร์สแรกของคุณวันนี้!</p>
+  </div>
+
+  <!-- Registration History by Year -->
+  <div class="history-section" *ngIf="!isLoading && registrationHistory.length > 0">
+    <div *ngFor="let year of getYearKeys()" class="year-section">
+      <h3 class="year-title">ปี {{ year }}</h3>
+      <div class="registration-grid">
+        <div
+          *ngFor="let registration of getRegistrationsByYear()[year]"
+          class="registration-card"
+        >
+          <div class="registration-header">
+            <div class="course-name">{{ registration.courseName }}</div>
+            <div 
+              class="status-badge" 
+              [style.background-color]="getStatusColor(registration.status)"
+            >
+              {{ getStatusLabel(registration.status) }}
+            </div>
+          </div>
+          
+          <div class="registration-details">
+            <div class="detail-item">
+              <span class="detail-label">วันที่สมัคร:</span>
+              <span class="detail-value">{{ formatDate(registration.registrationDate) }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">ราคา:</span>
+              <span class="detail-value">{{ registration.price | number }} บาท</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">รหัสคอร์ส:</span>
+              <span class="detail-value">#{{ registration.courseId.toString().padStart(4, '0') }}</span>
+            </div>
+          </div>
+
+          <div class="registration-footer">
+            <div class="registration-id">
+              รหัสการสมัคร: #{{ registration.id.toString().padStart(6, '0') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

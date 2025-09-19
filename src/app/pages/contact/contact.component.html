@@ -1,8 +1,9 @@
-<div class="contact-form">
-  <h2>ติดต่อเรา</h2>
-  <form (ngSubmit)="onSubmit()">
-    <label for="name">ชื่อ:</label>
-    <input id="name" type="text" [(ngModel)]="name" name="name" required />
+<div class="contact-page">
+  <div class="contact-form">
+    <h2>ติดต่อเรา</h2>
+    <form (ngSubmit)="onSubmit()">
+      <label for="name">ชื่อ:</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name" required />
 
     <label for="email">อีเมล:</label>
     <input id="email" type="email" [(ngModel)]="email" name="email" required />
@@ -12,4 +13,5 @@
 
     <button type="submit">ส่งข้อความ</button>
   </form>
+  </div>
 </div>
