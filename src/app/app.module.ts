@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HomeComponent } from './pages/home/home.component';
 import { CourseComponent } from './pages/course/course.component';
+import { CourseEnrollmentComponent } from './pages/course-enrollment/course-enrollment.component';
 import { ServiceComponent } from './pages/service/service.component';
 import { TrainerComponent } from './pages/trainer/trainer.component';
 import { TrainerDetailComponent } from './pages/trainer/trainer-detail.component';
@@ -24,6 +25,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     AppComponent,
     HomeComponent,
     CourseComponent,
+    CourseEnrollmentComponent,
     ServiceComponent,
     TrainerComponent,
     TrainerDetailComponent,
@@ -38,6 +40,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule
   ],
   providers: [],

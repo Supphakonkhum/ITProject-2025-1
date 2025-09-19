@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface Course {
   id: number;
@@ -59,7 +60,7 @@ export class CourseComponent implements OnInit {
       title: 'Yoga & Flexibility',
       description: 'เพิ่มความยืดหยุ่นและความสมดุลของร่างกายด้วยท่าโยคะ',
       duration: '50 นาที',
-      image: 'https://images.unsplash.com/photo-1506629905607-d84c39bd5a4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image: 'https://gymbeam.sk/blog/wp-content/uploads/2023/05/iStock-1455669523-1124x660.jpg',
       price: 1300,
       level: 'เริ่มต้น',
       tags: ['โยคะ', 'ยืดหยุ่น', 'สมดุล']
@@ -79,7 +80,7 @@ export class CourseComponent implements OnInit {
       title: 'Functional Training',
       description: 'พัฒนาความแข็งแรงและการเคลื่อนไหวที่ใช้ในชีวิตประจำวัน',
       duration: '55 นาที',
-      image: 'https://images.unsplash.com/photo-1566241134811-cac9b9d8e1b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image: 'https://cdn.centr.com/content/26000/25412/images/landscapewidedesktop1x-ec41255412947b51796bd952c5bafe04-ic-what-is-functional-training-inline-6-169-16922.jpg',
       price: 1700,
       level: 'กลาง',
       tags: ['ฟังก์ชั่น', 'ชีวิตประจำวัน', 'การเคลื่อนไหว']
@@ -119,7 +120,7 @@ export class CourseComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -146,7 +147,10 @@ export class CourseComponent implements OnInit {
   }
 
   enrollCourse(course: Course): void {
-    console.log('สมัครเรียนคอร์ส:', course.title);
-    alert(`คุณได้สมัครคลาสออกกำลังกาย "${course.title}" เรียบร้อยแล้ว!\nราคา: ${course.price.toLocaleString()} บาท\nเราจะติดต่อกลับภายใน 24 ชั่วโมง`);
+    // ส่งข้อมูลคอร์สไปหน้าสมัครเรียนผ่าน query parameters
+    const courseData = encodeURIComponent(JSON.stringify(course));
+    this.router.navigate(['/course-enrollment'], { 
+      queryParams: { courseData: courseData }
+    });
   }
 }

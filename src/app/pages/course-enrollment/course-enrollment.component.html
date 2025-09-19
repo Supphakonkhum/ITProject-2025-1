@@ -1,0 +1,356 @@
+<div class="white-page-wrapper">
+  <div class="enrollment-container">
+    <!-- Header Section -->
+    <div class="enrollment-header">
+      <button (click)="goBack()" class="back-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"/>
+          <path d="M19 12H5"/>
+        </svg>
+        กลับไปหน้าคอร์ส
+      </button>
+      
+      <div class="header-content">
+        <h1 class="page-title">สมัครเรียนคอร์ส</h1>
+        <p class="page-subtitle">กรุณากรอกข้อมูลให้ครบถ้วนเพื่อสมัครเรียน</p>
+      </div>
+    </div>
+
+    <!-- Course Info Section -->
+    <div class="course-summary" *ngIf="course">
+      <div class="course-card-mini">
+        <img [src]="course.image" [alt]="course.title" class="course-image">
+        <div class="course-info">
+          <h3 class="course-title">{{ course.title }}</h3>
+          <p class="course-description">{{ course.description }}</p>
+          <div class="course-meta">
+            <span class="duration">⏱️ {{ course.duration }}</span>
+            <span class="level">📊 {{ course.level }}</span>
+            <span class="price">💰 {{ course.price.toLocaleString() }} บาท</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="showSuccessMessage">
+      <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h2>สมัครเรียนสำเร็จ!</h2>
+        <p>คุณได้สมัครเรียนคอร์ส <strong>{{ course?.title }}</strong> เรียบร้อยแล้ว</p>
+        <p class="redirect-message">กำลังนำไปหน้าคอร์สในอีก 3 วินาที...</p>
+      </div>
+    </div>
+
+    <!-- Enrollment Form -->
+    <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()" class="enrollment-form" *ngIf="!showSuccessMessage">
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">👤</span>
+          ข้อมูลส่วนตัว
+        </h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">ชื่อ <span class="required">*</span></label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              [class.error]="isFieldInvalid('firstName')"
+              placeholder="กรอกชื่อของคุณ">
+            <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+              {{ getFieldError('firstName') }}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="lastName">นามสกุล <span class="required">*</span></label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              [class.error]="isFieldInvalid('lastName')"
+              placeholder="กรอกนามสกุลของคุณ">
+            <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+              {{ getFieldError('lastName') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">อีเมล <span class="required">*</span></label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              [class.error]="isFieldInvalid('email')"
+              placeholder="example@email.com">
+            <div class="error-message" *ngIf="isFieldInvalid('email')">
+              {{ getFieldError('email') }}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              [class.error]="isFieldInvalid('phone')"
+              placeholder="0812345678">
+            <div class="error-message" *ngIf="isFieldInvalid('phone')">
+              {{ getFieldError('phone') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="birthDate">วันเกิด <span class="required">*</span></label>
+            <input
+              type="date"
+              id="birthDate"
+              formControlName="birthDate"
+              [class.error]="isFieldInvalid('birthDate')">
+            <div class="age-display" *ngIf="enrollmentForm.get('birthDate')?.value">
+              อายุ: {{ calculateAge() }} ปี
+            </div>
+            <div class="error-message" *ngIf="isFieldInvalid('birthDate')">
+              {{ getFieldError('birthDate') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">ที่อยู่ <span class="required">*</span></label>
+          <textarea
+            id="address"
+            formControlName="address"
+            [class.error]="isFieldInvalid('address')"
+            placeholder="กรอกที่อยู่ปัจจุบันของคุณ"
+            rows="3"></textarea>
+          <div class="error-message" *ngIf="isFieldInvalid('address')">
+            {{ getFieldError('address') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Contact Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">🚨</span>
+          ผู้ติดต่อฉุกเฉิน
+        </h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emergencyContact">ชื่อผู้ติดต่อฉุกเฉิน <span class="required">*</span></label>
+            <input
+              type="text"
+              id="emergencyContact"
+              formControlName="emergencyContact"
+              [class.error]="isFieldInvalid('emergencyContact')"
+              placeholder="ชื่อ-นามสกุล ผู้ติดต่อฉุกเฉิน">
+            <div class="error-message" *ngIf="isFieldInvalid('emergencyContact')">
+              {{ getFieldError('emergencyContact') }}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="emergencyPhone">เบอร์โทรศัพท์ฉุกเฉิน <span class="required">*</span></label>
+            <input
+              type="tel"
+              id="emergencyPhone"
+              formControlName="emergencyPhone"
+              [class.error]="isFieldInvalid('emergencyPhone')"
+              placeholder="0812345678">
+            <div class="error-message" *ngIf="isFieldInvalid('emergencyPhone')">
+              {{ getFieldError('emergencyPhone') }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">🏥</span>
+          ข้อมูลสุขภาพ
+        </h2>
+        
+        <div class="form-group">
+          <label for="medicalConditions">โรคประจำตัวหรือการแพ้ยา (ถ้ามี)</label>
+          <textarea
+            id="medicalConditions"
+            formControlName="medicalConditions"
+            placeholder="โปรดระบุโรคประจำตัว ยาที่แพ้ หรือข้อจำกัดทางร่างกาย (ถ้าไม่มีให้เว้นว่าง)"
+            rows="3"></textarea>
+          <small class="form-help">ข้อมูลนี้จะช่วยให้เทรนเนอร์ดูแลคุณได้อย่างเหมาะสม</small>
+        </div>
+      </div>
+
+      <!-- Training Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">💪</span>
+          ข้อมูลการฝึกซ้อม
+        </h2>
+        
+        <div class="form-group">
+          <label for="experience">ระดับประสบการณ์ <span class="required">*</span></label>
+          <select
+            id="experience"
+            formControlName="experience"
+            [class.error]="isFieldInvalid('experience')">
+            <option value="">เลือกระดับประสบการณ์</option>
+            <option value="beginner">เริ่มต้น (ไม่เคยออกกำลังกายมาก่อน)</option>
+            <option value="novice">มือใหม่ (เคยออกกำลังกายบ้างแต่ไม่สม่ำเสมอ)</option>
+            <option value="intermediate">ปานกลาง (ออกกำลังกายสม่ำเสมอ 1-2 ปี)</option>
+            <option value="advanced">มากประสบการณ์ (ออกกำลังกายสม่ำเสมอมากกว่า 3 ปี)</option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('experience')">
+            {{ getFieldError('experience') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="goals">เป้าหมายในการเรียน <span class="required">*</span></label>
+          <textarea
+            id="goals"
+            formControlName="goals"
+            [class.error]="isFieldInvalid('goals')"
+            placeholder="อธิบายเป้าหมายที่คุณต้องการบรรลุจากการเรียนคอร์สนี้ (เช่น ลดน้ำหนัก, เพิ่มกล้ามเนื้อ, ความแข็งแรง, ฯลฯ)"
+            rows="4"></textarea>
+          <div class="error-message" *ngIf="isFieldInvalid('goals')">
+            {{ getFieldError('goals') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">💳</span>
+          การชำระเงิน
+        </h2>
+        
+        <div class="payment-summary">
+          <div class="payment-item">
+            <span>ค่าธรรมเนียมคอร์ส:</span>
+            <span class="amount">{{ course?.price?.toLocaleString() || '0' }} บาท</span>
+          </div>
+          <div class="payment-item">
+            <span>ส่วนลด:</span>
+            <span class="discount">0 บาท</span>
+          </div>
+          <div class="payment-item total">
+            <span>ยอดรวมที่ต้องชำระ:</span>
+            <span class="total-amount">{{ course?.price?.toLocaleString() || '0' }} บาท</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentMethod">วิธีการชำระเงิน <span class="required">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" formControlName="paymentMethod" value="credit_card">
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <span class="payment-icon">💳</span>
+                บัตรเครดิต/เดบิต
+              </span>
+            </label>
+            
+            <label class="radio-option">
+              <input type="radio" formControlName="paymentMethod" value="bank_transfer">
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <span class="payment-icon">🏦</span>
+                โอนเงินผ่านธนาคาร
+              </span>
+            </label>
+            
+            <label class="radio-option">
+              <input type="radio" formControlName="paymentMethod" value="promptpay">
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <span class="payment-icon">📱</span>
+                พร้อมเพย์ (PromptPay)
+              </span>
+            </label>
+            
+            <label class="radio-option">
+              <input type="radio" formControlName="paymentMethod" value="installment">
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <span class="payment-icon">📅</span>
+                ผ่อนชำระ (2-3 งวด)
+              </span>
+            </label>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('paymentMethod')">
+            {{ getFieldError('paymentMethod') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms and Conditions Section -->
+      <div class="form-section">
+        <h2 class="section-title">
+          <span class="section-icon">📋</span>
+          ข้อกำหนดและเงื่อนไข
+        </h2>
+        
+        <div class="terms-box">
+          <h4>เงื่อนไขการสมัครเรียน:</h4>
+          <ul>
+            <li>ผู้สมัครต้องมีอายุ 16 ปีขึ้นไป หากอายุต่ำกว่า 18 ปี ต้องมีผู้ปกครองยินยอม</li>
+            <li>ค่าธรรมเนียมที่ชำระแล้วไม่สามารถคืนได้ หากยกเลิกก่อนเริ่มคอร์ส 7 วัน</li>
+            <li>หากไม่สามารถเข้าเรียนได้ สามารถขอย้ายคอร์สได้ภายใน 30 วัน</li>
+            <li>ผู้เรียนต้องปฏิบัติตามกฎระเบียบของศูนย์ฝึกอบรม</li>
+            <li>ทางศูนย์จะไม่รับผิดชอบต่ออุบัติเหตุที่เกิดจากการไม่ปฏิบัติตามคำแนะนำ</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-option">
+            <input type="checkbox" formControlName="agreeTerms" [class.error]="isFieldInvalid('agreeTerms')">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-label">
+              ฉันได้อ่านและยอมรับ <strong>ข้อกำหนดและเงื่อนไข</strong> การสมัครเรียนแล้ว <span class="required">*</span>
+            </span>
+          </label>
+          <div class="error-message" *ngIf="isFieldInvalid('agreeTerms')">
+            {{ getFieldError('agreeTerms') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="form-actions">
+        <button type="button" (click)="goBack()" class="btn-secondary">
+          ยกเลิก
+        </button>
+        
+        <button type="submit" class="btn-primary" [disabled]="enrollmentForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-4"/>
+              <path d="M14 9c0-3-1-5-3-5s-3 2-3 5 1 5 3 5 3-2 3-5"/>
+              <path d="M14 9l7-7"/>
+              <path d="m21 2-5 5"/>
+            </svg>
+            สมัครเรียนตอนนี้
+          </span>
+          <span *ngIf="isSubmitting" class="loading-text">
+            <div class="spinner"></div>
+            กำลังประมวลผล...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

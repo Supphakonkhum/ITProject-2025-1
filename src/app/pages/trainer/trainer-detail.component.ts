@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface Trainer {
   id: number;
@@ -27,18 +28,37 @@ interface Trainer {
 })
 export class TrainerDetailComponent implements OnInit {
   trainer: Trainer | null = null;
+  showBookingModal = false;
+  bookingForm: FormGroup;
+  
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.bookingForm = this.formBuilder.group({
+      fullName: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      sessionDate: ['', Validators.required],
+      sessionTime: ['', Validators.required],
+      sessionType: ['', Validators.required],
+      goals: [''],
+      notes: ['']
+    });
+  }
   
   // ข้อมูล trainers เดียวกับใน trainer.component.ts
   trainers: Trainer[] = [
     { 
       id: 1,
-      name: 'John Smith', 
+      name: 'Pranthep Roongpromma', 
       specialty: 'Weight Training', 
       experience: 5,
       age: 28,
       certification: ['NASM-CPT', 'CSCS', 'Precision Nutrition Level 1'],
-      bio: 'John เป็นเทรนเนอร์ด้านการยกน้ำหนักที่มีประสบการณ์กว่า 5 ปี เชี่ยวชาญในการสร้างกล้ามเนื้อและการเพิ่มความแข็งแรง มีความเชี่ยวชาญในการออกแบบโปรแกรมการออกกำลังกายที่เหมาะสมกับแต่ละคน John เริ่มต้นการทำงานในวงการฟิตเนสตั้งแต่ปี 2019 และได้รับการรับรองจากหลายสถาบันชั้นนำ',
-      image: '',
+      bio: 'Pranthep Roongpromma เป็นเทรนเนอร์ด้านการยกน้ำหนักที่มีประสบการณ์กว่า 5 ปี เชี่ยวชาญในการสร้างกล้ามเนื้อและการเพิ่มความแข็งแรง มีความเชี่ยวชาญในการออกแบบโปรแกรมการออกกำลังกายที่เหมาะสมกับแต่ละคน Pranthep เริ่มต้นการทำงานในวงการฟิตเนสตั้งแต่ปี 2019 และได้รับการรับรองจากหลายสถาบันชั้นนำ',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/112772',
       achievements: [
         'เหรียญทองการแข่งขันเพาะกาย 2022',
         'Best Trainer Award 2023',
@@ -55,13 +75,13 @@ export class TrainerDetailComponent implements OnInit {
     },
     { 
       id: 2,
-      name: 'Jane Doe', 
+      name: 'Kru ZomO', 
       specialty: 'Yoga', 
       experience: 3,
       age: 25,
       certification: ['RYT-200', 'Yin Yoga Certificate', 'Meditation Instructor'],
-      bio: 'Jane เป็นครูโยคะที่มีความเชี่ยวชาญในการสอนโยคะทุกระดับ จากผู้เริ่มต้นจนถึงระดับขั้นสูง มีความเชี่ยวชาญพิเศษในด้าน Vinyasa Flow และ Yin Yoga Jane เชื่อในพลังของโยคะที่สามารถเปลี่ยนแปลงชีวิตทั้งร่างกายและจิตใจ',
-      image: '',
+      bio: 'Kru ZomO เป็นครูโยคะที่มีความเชี่ยวชาญในการสอนโยคะทุกระดับ จากผู้เริ่มต้นจนถึงระดับขั้นสูง มีความเชี่ยวชาญพิเศษในด้าน Vinyasa Flow และ Yin Yoga Kru ZomO เชื่อในพลังของโยคะที่สามารถเปลี่ยนแปลงชีวิตทั้งร่างกายและจิตใจ',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/97443',
       achievements: [
         'Certified Yoga Alliance 500 Hours', 
         'Mindfulness Training Certificate',
@@ -78,13 +98,13 @@ export class TrainerDetailComponent implements OnInit {
     },
     { 
       id: 3,
-      name: 'Mike Johnson', 
+      name: 'Kru ae', 
       specialty: 'Cardio', 
       experience: 7,
       age: 32,
       certification: ['ACSM-CPT', 'Spinning Instructor', 'HIIT Specialist'],
-      bio: 'Mike เป็นผู้เชี่ยวชาญด้านการออกกำลังกายแบบคาร์ดิโอ มีประสบการณ์ในการสอน HIIT และ Spinning Mike เป็นนักกีฬาระดับแนวหน้าที่หันมาเป็นเทรนเนอร์ เพื่อแบ่งปันความรู้และประสบการณ์ให้กับผู้ที่ต้องการปรับปรุงสุขภาพ',
-      image: '',
+      bio: 'Kru ae เป็นผู้เชี่ยวชาญด้านการออกกำลังกายแบบคาร์ดิโอ มีประสบการณ์ในการสอน HIIT และ Spinning Kru ae เป็นนักกีฬาระดับแนวหน้าที่หันมาเป็นเทรนเนอร์ เพื่อแบ่งปันความรู้และประสบการณ์ให้กับผู้ที่ต้องการปรับปรุงสุขภาพ',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/203647',
       achievements: [
         'Marathon Finisher 2021, 2022, 2023',
         'Triathlon Bronze Medal 2022',
@@ -100,11 +120,6 @@ export class TrainerDetailComponent implements OnInit {
       }
     }
   ];
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -138,9 +153,46 @@ export class TrainerDetailComponent implements OnInit {
   }
 
   bookSession(): void {
-    if (this.trainer) {
-      alert(`กำลังจองเซสชั่นกับ ${this.trainer.name}\nเราจะติดต่อกลับภายใน 24 ชั่วโมง`);
+    this.showBookingModal = true;
+  }
+
+  closeBookingModal(): void {
+    this.showBookingModal = false;
+    this.bookingForm.reset();
+  }
+
+  onSubmitBooking(): void {
+    if (this.bookingForm.valid && this.trainer) {
+      const bookingData = {
+        trainerId: this.trainer.id,
+        trainerName: this.trainer.name,
+        trainerSpecialty: this.trainer.specialty,
+        ...this.bookingForm.value,
+        bookingDate: new Date().toISOString(),
+        status: 'pending'
+      };
+
+      // บันทึกข้อมูลการจองใน localStorage
+      const existingBookings = JSON.parse(localStorage.getItem('trainerBookings') || '[]');
+      existingBookings.push(bookingData);
+      localStorage.setItem('trainerBookings', JSON.stringify(existingBookings));
+
+      alert(`จองเซสชั่นกับ ${this.trainer.name} เรียบร้อยแล้ว!\nเราจะติดต่อกลับภายใน 24 ชั่วโมง`);
+      this.closeBookingModal();
+    } else {
+      alert('กรุณากรอกข้อมูลให้ครบถ้วน');
     }
+  }
+
+  getFormError(fieldName: string): string {
+    const field = this.bookingForm.get(fieldName);
+    if (field?.errors && field.touched) {
+      if (field.errors['required']) return 'กรุณากรอกข้อมูลนี้';
+      if (field.errors['email']) return 'รูปแบบอีเมลไม่ถูกต้อง';
+      if (field.errors['minlength']) return 'ชื่อต้องมีอย่างน้อย 2 ตัวอักษร';
+      if (field.errors['pattern']) return 'เบอร์โทรต้องเป็นตัวเลข 10 หลัก';
+    }
+    return '';
   }
 
   contactTrainer(): void {

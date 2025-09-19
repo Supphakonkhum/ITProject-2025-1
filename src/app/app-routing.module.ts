@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { CourseComponent } from './pages/course/course.component';
+import { CourseEnrollmentComponent } from './pages/course-enrollment/course-enrollment.component';
 import { ServiceComponent } from './pages/service/service.component';
 import { TrainerComponent } from './pages/trainer/trainer.component';
 import { TrainerDetailComponent } from './pages/trainer/trainer-detail.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'course', component: CourseComponent },
+  { path: 'course-enrollment', component: CourseEnrollmentComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'trainer', component: TrainerComponent },
   { path: 'trainer/:id', component: TrainerDetailComponent },

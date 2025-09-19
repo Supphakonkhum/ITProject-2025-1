@@ -93,3 +93,138 @@
   <h2>ไม่พบข้อมูลเทรนเนอร์</h2>
   <button (click)="goBack()" class="btn-primary">กลับไปหน้า Trainers</button>
 </div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" *ngIf="showBookingModal">
+  <div class="modal-overlay" (click)="closeBookingModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>จองเซสชั่นกับ {{ trainer?.name }}</h3>
+      <button class="close-btn" (click)="closeBookingModal()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="trainer-info-mini">
+        <div class="trainer-avatar">
+          <img [src]="trainer?.image" [alt]="trainer?.name" onerror="this.src=''">
+        </div>
+        <div class="trainer-details-mini">
+          <h4>{{ trainer?.name }}</h4>
+          <p>{{ trainer?.specialty }} Specialist</p>
+          <div class="rating-mini">
+            ⭐ {{ trainer?.rating }}/5 ({{ trainer?.reviewCount }} รีวิว)
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="bookingForm" (ngSubmit)="onSubmitBooking()" class="booking-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fullName">ชื่อ-นามสกุล *</label>
+            <input type="text" id="fullName" class="form-control" formControlName="fullName" 
+                   placeholder="กรอกชื่อเต็มของคุณ">
+            <div class="error-message" *ngIf="getFormError('fullName')">
+              {{ getFormError('fullName') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">อีเมล *</label>
+            <input type="email" id="email" class="form-control" formControlName="email" 
+                   placeholder="example@email.com">
+            <div class="error-message" *ngIf="getFormError('email')">
+              {{ getFormError('email') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">เบอร์โทรศัพท์ *</label>
+            <input type="tel" id="phone" class="form-control" formControlName="phone" 
+                   placeholder="0812345678">
+            <div class="error-message" *ngIf="getFormError('phone')">
+              {{ getFormError('phone') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="sessionDate">วันที่ต้องการ *</label>
+            <input type="date" id="sessionDate" class="form-control" formControlName="sessionDate">
+            <div class="error-message" *ngIf="getFormError('sessionDate')">
+              {{ getFormError('sessionDate') }}
+            </div>
+          </div>
+          <div class="form-group half">
+            <label for="sessionTime">เวลา *</label>
+            <select id="sessionTime" class="form-control" formControlName="sessionTime">
+              <option value="">เลือกเวลา</option>
+              <option value="06:00">06:00</option>
+              <option value="07:00">07:00</option>
+              <option value="08:00">08:00</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+            </select>
+            <div class="error-message" *ngIf="getFormError('sessionTime')">
+              {{ getFormError('sessionTime') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sessionType">ประเภทเซสชั่น *</label>
+            <select id="sessionType" class="form-control" formControlName="sessionType">
+              <option value="">เลือกประเภทเซสชั่น</option>
+              <option value="personal-training">Personal Training (1:1)</option>
+              <option value="group-training">Group Training</option>
+              <option value="consultation">คำปรึกษาฟิตเนส</option>
+              <option value="assessment">ประเมินสมรรถภาพ</option>
+            </select>
+            <div class="error-message" *ngIf="getFormError('sessionType')">
+              {{ getFormError('sessionType') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="goals">เป้าหมาย</label>
+            <input type="text" id="goals" class="form-control" formControlName="goals" 
+                   placeholder="เช่น ลดน้ำหนัก, เพิ่มกล้ามเนื้อ, ออกกำลังกายเพื่อสุขภาพ">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="notes">หมายเหตุเพิ่มเติม</label>
+            <textarea id="notes" class="form-control" formControlName="notes" rows="3"
+                      placeholder="ข้อมูลเพิ่มเติมที่ต้องการให้เทรนเนอร์ทราบ เช่น ปัญหาสุขภาพ ประสบการณ์การออกกำลังกาย"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeBookingModal()">ยกเลิก</button>
+      <button type="submit" class="btn btn-primary" (click)="onSubmitBooking()"
+              [disabled]="!bookingForm.valid">ยืนยันการจอง</button>
+    </div>
+  </div>
+</div>

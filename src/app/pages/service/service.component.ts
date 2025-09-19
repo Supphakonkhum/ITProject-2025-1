@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface ServiceItem {
+  id: number;
   title: string;
   description: string;
   icon: string;
   features: string[];
   price: string;
+  duration: string;
+  popular?: boolean;
 }
 
 interface ServiceStep {
@@ -18,6 +22,13 @@ interface FAQ {
   answer: string;
 }
 
+interface SelectedService {
+  service: ServiceItem;
+  selectedDate?: string;
+  selectedTime?: string;
+  notes?: string;
+}
+
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
@@ -28,10 +39,16 @@ export class ServiceComponent implements OnInit {
   serviceSteps: ServiceStep[] = [];
   faqs: FAQ[] = [];
   activeFaq: number = -1;
+  selectedServices: SelectedService[] = [];
+  showBookingModal: boolean = false;
+  currentService: ServiceItem | null = null;
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.services = [
       {
+        id: 1,
         title: 'นัดหมายกับเทรนเนอร์',
         description: 'จองเวลาเทรนเนอร์ที่คุณต้องการได้ล่วงหน้า พร้อมการยืนยันทันที',
         icon: '📅',
@@ -41,9 +58,12 @@ export class ServiceComponent implements OnInit {
           'แจ้งเตือนก่อนเวลานัด',
           'สามารถแก้ไขหรือยกเลิกได้'
         ],
-        price: '299'
+        price: '299',
+        duration: '1 ชั่วโมง',
+        popular: true
       },
       {
+        id: 2,
         title: 'ติดตามผลการฝึก',
         description: 'ดูสถิติและผลลัพธ์ของการฝึกแต่ละครั้งพร้อมการวิเคราะห์',
         icon: '📊',
@@ -53,9 +73,11 @@ export class ServiceComponent implements OnInit {
           'รายงานสรุปรายเดือน',
           'เปรียบเทียบผลลัพธ์'
         ],
-        price: '199'
+        price: '199',
+        duration: 'ตลอดเดือน'
       },
       {
+        id: 3,
         title: 'ค้นหาเทรนเนอร์',
         description: 'เลือกเทรนเนอร์ที่เหมาะกับเป้าหมายของคุณ พร้อมข้อมูลครบถ้วน',
         icon: '🏋️',
@@ -65,9 +87,11 @@ export class ServiceComponent implements OnInit {
           'เปรียบเทียบเทรนเนอร์',
           'ติดต่อโดยตรง'
         ],
-        price: '99'
+        price: '99',
+        duration: 'ไม่จำกัด'
       },
       {
+        id: 4,
         title: 'โปรแกรมส่วนตัว',
         description: 'รับโปรแกรมการฝึกที่ออกแบบเฉพาะสำหรับคุณ',
         icon: '🎯',
@@ -77,9 +101,12 @@ export class ServiceComponent implements OnInit {
           'ปรับแผนตามความก้าวหน้า',
           'การสนับสนุนต่อเนื่อง'
         ],
-        price: '599'
+        price: '599',
+        duration: '30 วัน',
+        popular: true
       },
       {
+        id: 5,
         title: 'กลุ่มฝึกหมู่',
         description: 'เข้าร่วมกลุ่มฝึกหมู่กับผู้คนที่มีเป้าหมายเดียวกัน',
         icon: '👥',
@@ -89,9 +116,11 @@ export class ServiceComponent implements OnInit {
           'สร้างแรงบันดาลใจร่วมกัน',
           'ค่าใช้จ่ายประหยัด'
         ],
-        price: '399'
+        price: '399',
+        duration: '4 สัปดาห์'
       },
       {
+        id: 6,
         title: 'คำปรึกษาโภชนาการ',
         description: 'รับคำแนะนำด้านโภชนาการจากผู้เชี่ยวชาญ',
         icon: '🥗',
@@ -101,7 +130,8 @@ export class ServiceComponent implements OnInit {
           'ติดตามการกินประจำวัน',
           'คำแนะนำจากโภชนากร'
         ],
-        price: '499'
+        price: '499',
+        duration: '2 สัปดาห์'
       }
     ];
 
@@ -149,8 +179,54 @@ export class ServiceComponent implements OnInit {
   }
 
   selectService(service: ServiceItem): void {
-    console.log('เลือกบริการ:', service.title);
-    alert(`คุณได้เลือกบริการ "${service.title}"\nราคา ${service.price} บาท/เดือน\n\nเราจะติดต่อกลับเพื่อยืนยันการสมัครสมาชิก`);
+    this.currentService = service;
+    this.showBookingModal = true;
+  }
+
+  bookService(service: ServiceItem, bookingData?: any): void {
+    const selectedService: SelectedService = {
+      service: service,
+      selectedDate: bookingData?.date,
+      selectedTime: bookingData?.time,
+      notes: bookingData?.notes
+    };
+
+    // เพิ่มบริการที่เลือกลงใน array
+    this.selectedServices.push(selectedService);
+    
+    // บันทึกลง localStorage
+    const existingServices = JSON.parse(localStorage.getItem('selectedServices') || '[]');
+    existingServices.push(selectedService);
+    localStorage.setItem('selectedServices', JSON.stringify(existingServices));
+
+    this.showBookingModal = false;
+    this.currentService = null;
+
+    // แสดงข้อความยืนยัน
+    alert(`คุณได้เลือกบริการ "${service.title}" เรียบร้อยแล้ว!\nราคา: ${service.price} บาท/เดือน\nระยะเวลา: ${service.duration}\n\nเราจะติดต่อกลับเพื่อยืนยันการใช้บริการภายใน 24 ชั่วโมง`);
+  }
+
+  closeBookingModal(): void {
+    this.showBookingModal = false;
+    this.currentService = null;
+  }
+
+  isServiceSelected(serviceId: number): boolean {
+    return this.selectedServices.some(selected => selected.service.id === serviceId);
+  }
+
+  getSelectedServiceCount(): number {
+    return this.selectedServices.length;
+  }
+
+  viewSelectedServices(): void {
+    if (this.selectedServices.length > 0) {
+      this.router.navigate(['/profile'], { 
+        queryParams: { tab: 'services' }
+      });
+    } else {
+      alert('คุณยังไม่ได้เลือกบริการใดๆ');
+    }
   }
 
   toggleFaq(index: number): void {

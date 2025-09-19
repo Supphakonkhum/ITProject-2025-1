@@ -29,13 +29,13 @@ export class TrainerComponent implements OnInit {
   trainers: Trainer[] = [
     { 
       id: 1,
-      name: 'John Smith', 
+      name: 'Pranthep Roongpromma', 
       specialty: 'Weight Training', 
       experience: 5,
       age: 28,
       certification: ['NASM-CPT', 'CSCS', 'Precision Nutrition Level 1'],
-      bio: 'John เป็นเทรนเนอร์ด้านการยกน้ำหนักที่มีประสบการณ์กว่า 5 ปี เชี่ยวชาญในการสร้างกล้ามเนื้อและการเพิ่มความแข็งแรง',
-      image: '',
+      bio: 'Pranthep Roongpromma เป็นเทรนเนอร์ด้านการยกน้ำหนักที่มีประสบการณ์กว่า 5 ปี เชี่ยวชาญในการสร้างกล้ามเนื้อและการเพิ่มความแข็งแรง',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/112772',
       achievements: [
         'เหรียญทองการแข่งขันเพาะกาย 2022',
         'Best Trainer Award 2023',
@@ -45,19 +45,19 @@ export class TrainerComponent implements OnInit {
       rating: 4.8,
       reviewCount: 150,
       contactInfo: {
-        email: 'john.smith@fitness.com',
+        email: 'pranthep.roongpromma@fitness.com',
         phone: '02-123-4567'
       }
     },
     { 
       id: 2,
-      name: 'Jane Doe', 
+      name: 'Kru ZomO', 
       specialty: 'Yoga', 
       experience: 3,
       age: 25,
       certification: ['RYT-200', 'Yin Yoga Certificate', 'Meditation Instructor'],
-      bio: 'Jane เป็นครูโยคะที่มีความเชี่ยวชาญในการสอนโยคะทุกระดับ จากผู้เริ่มต้นจนถึงระดับขั้นสูง',
-      image: '',
+      bio: 'Kru ZomO เป็นครูโยคะที่มีความเชี่ยวชาญในการสอนโยคะทุกระดับ จากผู้เริ่มต้นจนถึงระดับขั้นสูง',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/97443',
       achievements: [
         'Certified Yoga Alliance 500 Hours',
         'Mindfulness Training Certificate',
@@ -73,13 +73,13 @@ export class TrainerComponent implements OnInit {
     },
     { 
       id: 3,
-      name: 'Mike Johnson', 
+      name: 'Kru ae', 
       specialty: 'Cardio', 
       experience: 7,
       age: 32,
       certification: ['ACSM-CPT', 'Spinning Instructor', 'HIIT Specialist'],
-      bio: 'Mike เป็นผู้เชี่ยวชาญด้านการออกกำลังกายแบบคาร์ดิโอ มีประสบการณ์ในการสอน HIIT และ Spinning',
-      image: '',
+      bio: 'Kru ae เป็นผู้เชี่ยวชาญด้านการออกกำลังกายแบบคาร์ดิโอ มีประสบการณ์ในการสอน HIIT และ Spinning Kru ae เป็นนักกีฬาระดับแนวหน้าที่หันมาเป็นเทรนเนอร์ เพื่อแบ่งปันความรู้และประสบการณ์ให้กับผู้ที่ต้องการปรับปรุงสุขภาพ',
+      image: 'https://bestkru-thumbs.s3-ap-southeast-1.amazonaws.com/203647',
       achievements: [
         'Marathon Finisher 2021, 2022, 2023',
         'Triathlon Bronze Medal 2022',

@@ -1,19 +1,56 @@
-<div class="services-page">
+<div class="white-page-wrapper">
   <section class="services-section">
     <div class="container">
       <div class="section-header">
         <h1 class="section-title">บริการของเรา</h1>
         <p class="section-subtitle">บริการครบครันสำหรับการดูแลสุขภาพและการฝึกของคุณ</p>
+        
+        <!-- Selected Services Summary -->
+        <div class="selected-summary" *ngIf="getSelectedServiceCount() > 0">
+          <div class="summary-card">
+            <span class="summary-text">
+              คุณได้เลือกบริการแล้ว {{ getSelectedServiceCount() }} รายการ
+            </span>
+            <button class="btn-view-selected" (click)="viewSelectedServices()">
+              ดูรายการที่เลือก
+            </button>
+          </div>
+        </div>
       </div>
 
     <div class="services-grid">
-      <div class="service-card" *ngFor="let service of services; let i = index" [attr.data-index]="i">
+      <div class="service-card" 
+           *ngFor="let service of services; let i = index" 
+           [attr.data-index]="i"
+           [class.selected]="isServiceSelected(service.id)"
+           [class.popular]="service.popular">
+        
+        <!-- Popular Badge -->
+        <div class="popular-badge" *ngIf="service.popular">
+          <span>🔥 ยอดนิยม</span>
+        </div>
+        
+        <!-- Selected Badge -->
+        <div class="selected-badge" *ngIf="isServiceSelected(service.id)">
+          <span>✅ เลือกแล้ว</span>
+        </div>
+        
         <div class="service-icon">
           <span class="icon">{{ service.icon }}</span>
         </div>
         <div class="service-content">
           <h3 class="service-title">{{ service.title }}</h3>
           <p class="service-description">{{ service.description }}</p>
+          
+          <div class="service-meta">
+            <div class="meta-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+              <span>{{ service.duration }}</span>
+            </div>
+          </div>
           
           <div class="service-features">
             <div class="feature-item" *ngFor="let feature of service.features">
@@ -31,8 +68,11 @@
             <span class="price-amount">{{ service.price }}</span>
             <span class="price-unit">บาท/เดือน</span>
           </div>
-          <button class="btn btn-primary" (click)="selectService(service)">
-            <span>เลือกบริการ</span>
+          <button class="btn btn-primary" 
+                  (click)="selectService(service)"
+                  [class.selected]="isServiceSelected(service.id)">
+            <span *ngIf="!isServiceSelected(service.id)">เลือกบริการ</span>
+            <span *ngIf="isServiceSelected(service.id)">เลือกอีกครั้ง</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6"/>
             </svg>
@@ -72,6 +112,76 @@
         </div>
       </div>
     </div>
-  </div>
+      </div>
   </section>
+
+  <!-- Booking Modal -->
+  <div class="booking-modal" *ngIf="showBookingModal && currentService">
+    <div class="modal-overlay" (click)="closeBookingModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>จองบริการ: {{ currentService.title }}</h3>
+        <button class="close-btn" (click)="closeBookingModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="service-info">
+          <div class="service-icon-large">{{ currentService.icon }}</div>
+          <h4>{{ currentService.title }}</h4>
+          <p>{{ currentService.description }}</p>
+          
+          <div class="service-details">
+            <div class="detail-item">
+              <strong>ราคา:</strong> {{ currentService.price }} บาท/เดือน
+            </div>
+            <div class="detail-item">
+              <strong>ระยะเวลา:</strong> {{ currentService.duration }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="booking-form">
+          <h5>ข้อมูลการจอง (ไม่บังคับ)</h5>
+          
+          <div class="form-group">
+            <label>วันที่ต้องการเริ่มใช้บริการ:</label>
+            <input type="date" #bookingDate class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label>เวลาที่สะดวก:</label>
+            <select #bookingTime class="form-control">
+              <option value="">เลือกเวลา</option>
+              <option value="morning">เช้า (6:00-12:00)</option>
+              <option value="afternoon">บ่าย (12:00-18:00)</option>
+              <option value="evening">เย็น (18:00-22:00)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>หมายเหตุเพิ่มเติม:</label>
+            <textarea #bookingNotes placeholder="ระบุความต้องการพิเศษหรือข้อมูลเพิ่มเติม..." rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeBookingModal()">
+          ยกเลิก
+        </button>
+        <button class="btn btn-primary" (click)="bookService(currentService, {
+          date: bookingDate.value,
+          time: bookingTime.value,
+          notes: bookingNotes.value
+        })">
+          ยืนยันการเลือกบริการ
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

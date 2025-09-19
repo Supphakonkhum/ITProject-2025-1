@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
       id: 1,
       title: 'กีฬาออนไลน์',
       description: 'เรียนรู้ท่าออกกำลังกาย เทคนิคการเล่นกีฬา และสุขภาพดี',
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: 'https://fth0.com/uppic/13101493/news/13101493_0_20181106-165658.png',
       category: 'กีฬาออนไลน์',
-      link: 'https://www.sanook.com/health/',
+      link: 'https://www.homefittools.com/news/16-Basic-Exercise.html',
       isExternal: true
     },
     {
